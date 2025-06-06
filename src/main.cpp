@@ -10,7 +10,7 @@
 HardwareSerial mySerial(2);  // UART2: comunicación con la PIC
 
 bool ledState = false;
-bool setVelocidad = false;
+
 
 // === ESTRUCTURAS DE DATOS ===
 typedef struct struct_message {
@@ -140,10 +140,7 @@ void procesarCadenaPIC(const String &data) {
     Serial.print("Duty [%]: "); Serial.println(duty);
     Serial.println("=================================");
 
-    if(!setVelocidad){
-      mySerial.println("V0AA");
-      setVelocidad = true;
-    } 
+     
     // Enviar por ESP-NOW al maestro
     enviarDatosAMaestro(rps, iout, temperatura, duty);
   }
@@ -159,9 +156,9 @@ void enviarDatosAMaestro(float rps, float corriente, float temperatura, float du
   esp_err_t result = esp_now_send(masterAddress, (uint8_t *) &datosParaMaster, sizeof(datosParaMaster));
 
   if (result == ESP_OK) {
-    Serial.println("✔️  Datos enviados al maestro por ESP-NOW.");
+    Serial.println(" Datos enviados al maestro por ESP-NOW.");
   } else {
-    Serial.print("❌ Error al enviar datos al maestro: ");
+    Serial.print("Error al enviar datos al maestro: ");
     Serial.println(result);
   }
 }
